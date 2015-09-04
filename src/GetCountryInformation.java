@@ -105,32 +105,23 @@ public class GetCountryInformation {
      */
     private JsonObject getJsonData(String countriesFilename,
             String subdivisionsFilename) {
-        // Utilities scanner used serially for file scanning
-        Scanner scanner = null;
-
         // Parse countries file and create a JSON data structure for later use
-        try {
-            scanner = new Scanner(new URL(countriesFilename).
-                    openStream()).useDelimiter("\t|\\n");
+        try (Scanner scanner = new Scanner(new URL(countriesFilename).
+                    openStream()).useDelimiter("\t|\\n");) {
             countryDictionary = parseCountriesData(scanner);
         } catch (IOException e) {
             System.out.println("Unable to read country file - " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            scanner.close();
         }
 
         // Parse subdivision file and create JSON data structure
         JsonObject subdivisionJsonData = null;
-        try {
-            scanner = new Scanner(new URL(subdivisionsFilename).
-                    openStream()).useDelimiter("\t|\\n");
+        try (Scanner scanner = new Scanner(new URL(subdivisionsFilename).
+                    openStream()).useDelimiter("\t|\\n");) {
             subdivisionJsonData = parseSubdivisionsData(scanner);
         } catch (IOException e) {
             System.out.println("Unable to read subdivisions file - " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            scanner.close();
         }
 
         // Return complete JSON object from countries and subdivisions info
